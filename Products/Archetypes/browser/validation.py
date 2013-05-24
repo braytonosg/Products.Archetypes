@@ -19,6 +19,13 @@ class InlineValidationView(BrowserView):
         if instance is None:
             instance = self.context
 
+        # not sure where this getField AttributeError is coming from...
+        field = None
+        try:
+            field = instance.getField(fname)
+        except AttributeError, e:
+            logging.info('Error validating field: %s' % e)
+
         field = instance.getField(fname)
         if field and field.type not in SKIP_VALIDATION_FIELDTYPES:
             error = field.validate(value, instance, {})
