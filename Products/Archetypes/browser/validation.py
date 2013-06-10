@@ -2,6 +2,7 @@ from Acquisition import aq_inner
 from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
 import json
+import logging
 
 SKIP_VALIDATION_FIELDTYPES = ('image', 'file')
 
