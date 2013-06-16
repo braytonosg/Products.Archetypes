@@ -27,7 +27,6 @@ class InlineValidationView(BrowserView):
         except AttributeError, e:
             logging.info('Error validating field: %s' % e)
 
-        field = instance.getField(fname)
         if field and field.type not in SKIP_VALIDATION_FIELDTYPES:
             error = field.validate(value, instance, {})
             if isinstance(error, str):
