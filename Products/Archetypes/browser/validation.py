@@ -2,6 +2,7 @@ from Acquisition import aq_inner
 from Products.Five import BrowserView
 from Products.CMFCore.utils import getToolByName
 import json
+import logging
 
 SKIP_VALIDATION_FIELDTYPES = ('image', 'file')
 
@@ -19,7 +20,13 @@ class InlineValidationView(BrowserView):
         if instance is None:
             instance = self.context
 
-        field = instance.getField(fname)
+        # not sure where this getField AttributeError is coming from...
+        field = None
+        try:
+            field = instance.getField(fname)
+        except AttributeError, e:
+            logging.info('Error validating field: %s' % e)
+
         if field and field.type not in SKIP_VALIDATION_FIELDTYPES:
             error = field.validate(value, instance, {}, REQUEST=self.request)
             if isinstance(error, str):
